@@ -1,4 +1,4 @@
-#include "Puzzle.h"
+/*#include "Puzzle.h"
 
 #include <iostream>
 #include <vector>
@@ -11,15 +11,12 @@ std::vector<std::string> predefined_puzzles = {
 	"$#@!%@$#$&$&!!*@@!$$@$!&*@**&$&@$!#*@&*@&###!@@%&@&!%&&%##$#@@&$",
 };
 
-/*
-* Declare and define as many functions as necessary
-*/
+// Declare and define as many functions as necessary
 
 int main()
 {
-	/*
-	* Implement text-based UI for playing Bejeweled game as required
-	*/
+	// Implement text-based UI for playing Bejeweled game as required
 
 	return 0;
 }
+*/
