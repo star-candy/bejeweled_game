@@ -35,6 +35,6 @@ Jewel Puzzle::getJewelType(char letter) {
 Puzzle::Puzzle(int num_rows, int num_columns) {
     int jewelsSize = num_rows * num_columns;
     for (int i = 0; i < jewelsSize; i++) {
-        jewels.push_back(Jewel::NONE);
+        jewel_list.push_back(Jewel::NONE);
     }
 }

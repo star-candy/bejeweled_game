@@ -39,5 +39,5 @@ public:
 private:
 	int num_rows;
 	int num_columns;
-	std::vector<Jewel> jewels; //8*8 전체 jewel 저장 벡터
+	std::vector<Jewel> jewel_list; //8*8 전체 jewel 저장 벡터
 };
