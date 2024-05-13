@@ -8,7 +8,7 @@
 	
   + [0] getJewlType function 구현 (text 입력시 입력에 해당하는 보석 type 반환)
 	
-  + [] puzzle constructor (게임의 가로, 세로 개수를 인자로 받음, 행 + 열 크기를 vector 크기로)
+  + [0] puzzle constructor (게임의 가로, 세로 개수를 인자로 받음, 행 + 열 크기를 vector 크기로)
 	+ 모든 jewel 을 NONE으로 초기화
 	+ vector 명은 jewels
 	

@@ -39,8 +39,5 @@ public:
 private:
 	int num_rows;
 	int num_columns;
-
-	/*
-	* Add as many member functions and variables as necessary
-	*/
+	std::vector<Jewel> jewels; //8*8 전체 jewel 저장 벡터
 };

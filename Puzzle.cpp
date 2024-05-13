@@ -32,4 +32,9 @@ Jewel Puzzle::getJewelType(char letter) {
     return jewel;
 }
 
-
+Puzzle::Puzzle(int num_rows, int num_columns) {
+    int jewelsSize = num_rows * num_columns;
+    for (int i = 0; i < jewelsSize; i++) {
+        jewels.push_back(Jewel::NONE);
+    }
+}
