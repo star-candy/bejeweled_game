@@ -35,6 +35,15 @@ Jewel Puzzle::getJewelType(char letter) {
 Puzzle::Puzzle(int num_rows, int num_columns) {
     int jewelsSize = num_rows * num_columns;
     for (int i = 0; i < jewelsSize; i++) {
-        jewel_list.push_back(Jewel::NONE);
+        jewels.push_back(Jewel::NONE);
     }
+}
+
+bool Puzzle::initialize(const std::string& jewel_list) {
+    if (jewel_list.length() != 64) return false;
+
+    for (int i = 0; i < 64; i++) {
+        jewels[i] = getJewelType(jewel_list[i]);
+    }
+    return true;
 }

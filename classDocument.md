@@ -12,7 +12,7 @@
 	+ 모든 jewel 을 NONE으로 초기화
 	+ vector 명은 jewels
 	
-  + [] initialize (입력받은 jewel_list_문자열을 통해 모든 jewel을 초기화)
+  + [0] initialize (입력받은 jewel_list_문자열을 통해 모든 jewel을 초기화)
 	+ jewel_list문자열은 getJewelType을 통해 jewel type으로 변경_
 	+ jewel vector와 jewel_list길이 불일치시 false return_
 	
