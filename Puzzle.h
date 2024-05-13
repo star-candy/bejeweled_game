@@ -14,8 +14,8 @@ enum class Jewel
 class Puzzle
 {
 public:
-	struct Chain
-	{
+	struct Chain //체인 발생 시 Chain 객체 생성, type과 시작, 종료 지점 명시
+	{//update에서 chain vector로 전체 chain 식별 가능해보임 
 		Jewel jewel;
 		std::pair<int, int> start;
 		std::pair<int, int> end;
@@ -41,5 +41,5 @@ public:
 private:
 	int num_rows;
 	int num_columns;
-	std::vector<Jewel> jewels; //8*8 전체 jewel 저장 벡터
+	std::vector<std::vector<Jewel>> jewels; //8*8 전체 jewel 저장 벡터
 };

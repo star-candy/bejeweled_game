@@ -33,24 +33,53 @@ Jewel Puzzle::getJewelType(char letter) {
 }
 
 Puzzle::Puzzle(int num_rows, int num_columns) {
-    int jewelsSize = num_rows * num_columns;
-    for (int i = 0; i < jewelsSize; i++) {
-        jewels.push_back(Jewel::NONE);
+    for (int i = 0; i < num_rows; i++) {
+        std::vector<Jewel> insideJewels;
+        for (int j = 0; j < num_columns; j++) {
+            insideJewels.push_back(Jewel::NONE);
+        }
+        jewels.push_back(insideJewels);
     }
 }
 
 bool Puzzle::initialize(const std::string& jewel_list) {
-    if (jewel_list.length() != 64) return false;
+    int jewelsLength = num_columns * num_rows;
+    if (jewel_list.length() != jewelsLength) return false;
 
-    for (int i = 0; i < 64; i++) {
-        jewels[i] = getJewelType(jewel_list[i]);
+    int jewel_list_set = 0;
+    for (int i = 0; i < num_rows; i++) {
+        for (int j = 0; j < num_columns; j++) {
+            jewels[j][i] = getJewelType(jewel_list[jewel_list_set]);
+            jewel_list_set++;
+        }
     }
     return true;
 }
 
 void Puzzle::randomize() {
-    for (int i = 0; i < 64; i++) {
-        srand((unsigned int)time(NULL));
-        jewels[i] = Jewel(rand() % 7);//0~7사이 값으로 난수 생성, 난수로 jewel enum 생성자 선언
+    srand((unsigned int)time(NULL));
+    for (int i = 0; i < num_rows; i++) {
+        for (int j = 0; j < num_columns; j++) {
+            jewels[i][j] = Jewel(rand() % 7);
+        }
     }
+}
+
+bool Puzzle::update() {
+    static bool kindValidate = true;//함수 종료 후 true, false value 기억해야 A, B 나눠 실행 가능
+    if (kindValidate == true) {//true 시 A기능 구현
+        kindValidate = false;
+        std::vector<Chain> chains;
+
+
+        return true;
+    }
+
+    if (kindValidate == false) {//false 시 B기능 구현
+        kindValidate == true;
+
+
+        return true;
+    }
+
 }
