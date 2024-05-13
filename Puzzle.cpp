@@ -47,3 +47,10 @@ bool Puzzle::initialize(const std::string& jewel_list) {
     }
     return true;
 }
+
+void Puzzle::randomize() {
+    for (int i = 0; i < 64; i++) {
+        srand((unsigned int)time(NULL));
+        jewels[i] = Jewel(rand() % 7);//0~7사이 값으로 난수 생성, 난수로 jewel enum 생성자 선언
+    }
+}

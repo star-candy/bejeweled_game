@@ -16,7 +16,7 @@
 	+ jewel_list문자열은 getJewelType을 통해 jewel type으로 변경_
 	+ jewel vector와 jewel_list길이 불일치시 false return_
 	
-  + [] randomize (모든 jewel을 랜덤하게 초기화)
+  + [0] randomize (모든 jewel을 랜덤하게 초기화)
 	+ rand와 enum 객체 생성으로 int와 jewel type 전환
 	
   + [] update (chain 존재 시 jewel vector에 update 진행)

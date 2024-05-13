@@ -3,6 +3,8 @@
 #include <utility>
 #include <string>
 #include <vector>
+#include <cstdlib> //rand함수 사용 위한 헤더 추가
+#include <ctime> //time함수 사용 위한 헤더 추가
 
 enum class Jewel
 {
