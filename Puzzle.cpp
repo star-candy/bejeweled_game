@@ -99,7 +99,13 @@ void Puzzle::identifyChain(std::vector<Chain>& chains) {
 }
 
 void Puzzle::clearChain(std::vector<Chain>& chains) {
-
+    for (int chainsCount = 0; chainsCount < chains.size(); chainsCount++) {
+        for (int y = chains[chainsCount].start.second; y < chains[chainsCount].end.second; y++) {
+            for (int x = chains[chainsCount].start.first; x < chains[chainsCount].end.first; x++) {
+                jewels[y][x] = Jewel::NONE;
+            }
+        }
+    }
 }
 
 void Puzzle::fillJewels() {
