@@ -49,7 +49,7 @@ bool Puzzle::initialize(const std::string& jewel_list) {
     int jewel_list_set = 0;
     for (int i = 0; i < num_rows; i++) {
         for (int j = 0; j < num_columns; j++) {
-            jewels[j][i] = getJewelType(jewel_list[jewel_list_set]);
+            jewels[i][j] = getJewelType(jewel_list[jewel_list_set]);
             jewel_list_set++;
         }
     }
@@ -113,7 +113,6 @@ void Puzzle::fillJewels() {
 }
 
 bool Puzzle::update() {
-    static bool kindValidate = true;//함수 종료 후 true, false value 기억해야 A, B 나눠 실행 가능
     if (kindValidate == true) {//true 시 A기능 구현
         kindValidate = false;
         std::vector<Chain> chains;
@@ -124,7 +123,7 @@ bool Puzzle::update() {
     }
 
     if (kindValidate == false) {//false 시 B기능 구현
-        kindValidate == true;
+        kindValidate = true;
 
 
         return true;
@@ -149,4 +148,18 @@ Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
     if (y < 0 || y >= num_columns) return Jewel::NONE;
 
     return jewels[y][x];
+}
+
+bool Puzzle::swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_loc) {
+    if (prev_loc.first < 0 || prev_loc.first >= num_rows || next_loc.first < 0 || next_loc.first >= num_rows) return false;
+    if (prev_loc.second < 0 || prev_loc.second >= num_columns || next_loc.second < 0 || next_loc.second >= num_columns) return false;
+    int xCount = (prev_loc.first - next_loc.first) * (prev_loc.first - next_loc.first);
+    int yCount = (prev_loc.second - next_loc.second) * (prev_loc.second - next_loc.second);
+    if (xCount != 1 || yCount != 1) return false;
+
+
+    Jewel buffer = jewels[prev_loc.second][prev_loc.first];
+    jewels[prev_loc.second][prev_loc.first] = jewels[next_loc.second][next_loc.first];
+    jewels[next_loc.second][next_loc.first] = buffer;
+    return true;
 }

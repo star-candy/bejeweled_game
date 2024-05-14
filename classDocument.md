@@ -37,7 +37,7 @@
 	+ 좌표 유효 시 해당 좌표의 보슥 type을 return
 	+ 비유효 좌표 시 NONE type을 return
 	
-  + [] swapJewels (swap 위한 보석 좌표 2개를 인자로 받음)
+  + [0] swapJewels (swap 위한 보석 좌표 2개를 인자로 받음)
 	+ 좌표 위치 검증(jewel vector 내에 있는가, 두 위치가 인접한가)->false 반환
 	+ jewels vector에서 두 좌표의 type swap -> true 반환
 	
