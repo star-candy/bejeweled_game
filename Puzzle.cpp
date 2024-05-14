@@ -65,12 +65,54 @@ void Puzzle::randomize() {
     }
 }
 
+bool Puzzle::validCount(int x, int y) {
+    if (x < 0 || x >= num_columns) return false;
+    if (y < 0 || y >= num_rows) return false;
+    return true;
+}
+
+void Puzzle::identifyChain(std::vector<Chain>& chains) {
+    for (int y = 0; y < num_rows; y++) {
+        for (int x = 0; x < num_columns; x++) {
+            Jewel currentType = jewels[y][x];
+            for (int k = 0; k < 4; ++k) {
+                int count = 1;
+                int nx = x + xChainCount[k];
+                int ny = y + yChainCount[k];
+                while (validCount(nx, ny) && jewels[ny][nx] == currentType) {
+                    count++;
+                    nx += xChainCount[k];
+                    ny += yChainCount[k];
+                }
+                if (count >= 3) {
+                    Chain chain;
+                    chain.jewel = currentType;
+                    chain.start.first = x;
+                    chain.start.second = y;
+                    chain.end.first = nx;
+                    chain.end.second = ny;
+                    chains.push_back(chain);
+                }
+            }
+        }
+    }
+}
+
+void Puzzle::clearChain(std::vector<Chain>& chains) {
+
+}
+
+void Puzzle::fillJewels() {
+
+}
+
 bool Puzzle::update() {
     static bool kindValidate = true;//함수 종료 후 true, false value 기억해야 A, B 나눠 실행 가능
     if (kindValidate == true) {//true 시 A기능 구현
         kindValidate = false;
         std::vector<Chain> chains;
-
+        identifyChain(chains);
+        clearChain(chains);
 
         return true;
     }

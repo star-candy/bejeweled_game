@@ -42,4 +42,10 @@ private:
 	int num_rows;
 	int num_columns;
 	std::vector<std::vector<Jewel>> jewels; //8*8 전체 jewel 저장 벡터
+	std::vector<int> xChainCount = { 0, 0, -1, 1 };
+	std::vector<int> yChainCount = { -1, 1, 0, 0 };
+	bool validCount(int x, int y);
+	void identifyChain(std::vector<Chain>& chains);
+	void clearChain(std::vector<Chain>& chains);
+	void fillJewels();
 };
