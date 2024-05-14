@@ -144,19 +144,20 @@ bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {
 Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
     int x = loc.first;
     int y = loc.second;
-    //if (x < 0 || x >= num_rows) return Jewel::NONE;
-    //if (y < 0 || y >= num_columns) return Jewel::NONE;
+    if (x >= 0 && x < num_rows && y >= 0 && y < num_columns) {
+        return jewels[y][x];
+    }
 
-    return jewels[y][x];
+    return Jewel::NONE; // Puzzle_window의 loc에서 조건검사 이상
 }
 
 bool Puzzle::swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_loc) {
-    if (prev_loc.first < 0 || prev_loc.first >= num_rows || next_loc.first < 0 || next_loc.first >= num_rows) return false;
+   /* if (prev_loc.first < 0 || prev_loc.first >= num_rows || next_loc.first < 0 || next_loc.first >= num_rows) return false;
     if (prev_loc.second < 0 || prev_loc.second >= num_columns || next_loc.second < 0 || next_loc.second >= num_columns) return false;
     int xCount = (prev_loc.first - next_loc.first) * (prev_loc.first - next_loc.first);
     int yCount = (prev_loc.second - next_loc.second) * (prev_loc.second - next_loc.second);
     if (xCount != 1 || yCount != 1) return false;
-
+    */
 
     Jewel buffer = jewels[prev_loc.second][prev_loc.first];
     jewels[prev_loc.second][prev_loc.first] = jewels[next_loc.second][next_loc.first];
