@@ -32,7 +32,7 @@ Jewel Puzzle::getJewelType(char letter) {
     return jewel;
 }
 
-Puzzle::Puzzle(int num_rows, int num_columns) {
+Puzzle::Puzzle(int num_rows, int num_columns) : num_rows{ num_rows }, num_columns{ num_columns } {
     for (int i = 0; i < num_rows; i++) {
         std::vector<Jewel> insideJewels;
         for (int j = 0; j < num_columns; j++) {
@@ -44,7 +44,7 @@ Puzzle::Puzzle(int num_rows, int num_columns) {
 
 bool Puzzle::initialize(const std::string& jewel_list) {
     int jewelsLength = num_columns * num_rows;
-    //if (jewel_list.length() != jewelsLength) return false;
+    if (jewel_list.length() != jewelsLength) return false;
 
     int jewel_list_set = 0;
     for (int i = 0; i < num_rows; i++) {
@@ -58,8 +58,8 @@ bool Puzzle::initialize(const std::string& jewel_list) {
 
 void Puzzle::randomize() {
     srand((unsigned int)time(NULL));
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (int i = 0; i < num_columns; i++) {
+        for (int j = 0; j < num_rows; j++) {
             jewels[i][j] = Jewel(rand() % 7);
         }
     }
@@ -72,7 +72,7 @@ bool Puzzle::validCount(int x, int y) {
 }
 
 void Puzzle::identifyChain(std::vector<Chain>& chains) {
-    for (int y = 0; y < num_rows; y++) {
+    /*for (int y = 0; y < num_rows; y++) {
         for (int x = 0; x < num_columns; x++) {
             Jewel currentType = jewels[y][x];
             for (int k = 0; k < 4; ++k) {
@@ -96,39 +96,89 @@ void Puzzle::identifyChain(std::vector<Chain>& chains) {
             }
         }
     }
-}
-
-void Puzzle::clearChain(std::vector<Chain>& chains) {
-    for (int chainsCount = 0; chainsCount < chains.size(); chainsCount++) {
-        for (int y = chains[chainsCount].start.second; y < chains[chainsCount].end.second; y++) {
-            for (int x = chains[chainsCount].start.first; x < chains[chainsCount].end.first; x++) {
-                jewels[y][x] = Jewel::NONE;
+    */
+    for (int y = 0; y < num_rows; ++y) {
+        for (int x = 0; x < num_columns; ++x) {
+            Jewel currentType = jewels[y][x];
+            if (currentType != Jewel::NONE) {
+                for (int k = 0; k < 4; ++k) {
+                    int count = 1;
+                    int nx = x + xChainCount[k];
+                    int ny = y + yChainCount[k];
+                    while (validCount(nx, ny) && jewels[ny][nx] == currentType) {
+                        count++;
+                        nx += xChainCount[k];
+                        ny += yChainCount[k];
+                    }
+                    if (count >= 3) {
+                        Chain chain;
+                        chain.jewel = currentType;
+                        chain.start.first = x;
+                        chain.start.second = y;
+                        chain.end.first = nx - xChainCount[k]; // 마지막으로 검사된 좌표의 이전 좌표
+                        chain.end.second = ny - yChainCount[k]; // 마지막으로 검사된 좌표의 이전 좌표
+                        chains.push_back(chain);
+                    }
+                }
             }
         }
     }
 }
 
-void Puzzle::fillJewels() {
+bool Puzzle::clearChain(std::vector<Chain>& chains) {
+    /*for (int chainsCount = 0; chainsCount < chains.size(); chainsCount++) {//vector 요소 찾기 size가 아닌가
+        for (int y = chains[chainsCount].start.second; y < chains[chainsCount].end.second; y++) {
+            for (int x = chains[chainsCount].start.first; x < chains[chainsCount].end.first; x++) {
+                jewels[y][x] = Jewel::NONE;
+            }
+        }
+    }*/
+    
+    for (Chain chain : chains) {
+        int startX = chain.start.first;
+        int startY = chain.start.second;
+        int endX = chain.end.first;
+        int endY = chain.end.second;
 
+        for (int y = startY; y <= endY; ++y) {
+            for (int x = startX; x <= endX; ++x) {
+                jewels[y][x] = Jewel::NONE;
+            }
+        }
+    }
+        return true;
+}
+
+bool Puzzle::fillJewels() {
+    bool executeCount = false;
+    srand((unsigned int)time(NULL));
+    for (int y = 0; y < num_columns; y++) {
+        for (int x = 0; x < num_rows; x++) {
+            if (jewels[y][x] == Jewel::NONE) {
+                jewels[y][x] = Jewel(rand() % 7);
+                executeCount = true;
+            }
+        }
+    }
+    return executeCount;
 }
 
 bool Puzzle::update() {
-    if (kindValidate == true) {//true 시 A기능 구현
-        kindValidate = false;
+    bool executeUpdate = false;
+    if (updateValidate == true) {//true 시 A기능 구현
+        updateValidate = false;
         std::vector<Chain> chains;
         identifyChain(chains);
-        clearChain(chains);
-
-        return true;
+        executeUpdate = clearChain(chains);
+        return executeUpdate;
     }
 
-    if (kindValidate == false) {//false 시 B기능 구현
-        kindValidate = true;
-
-
-        return true;
+    if (updateValidate == false) {//false 시 B기능 구현
+        updateValidate = true;
+        executeUpdate = fillJewels();
+        return executeUpdate;
     }
-    return false;
+    return executeUpdate;
 }
 
 bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {
@@ -141,10 +191,10 @@ bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {
     return true;
 }
 
-Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
+Jewel Puzzle::getJewel(std::pair<int, int> loc) const {//loc 조건 검사 필요
     int x = loc.first;
     int y = loc.second;
-    if (x >= 0 && x < num_rows && y >= 0 && y < num_columns) {
+    if (x >= 0 && x < num_rows && y >= 0 && y < num_columns) {//rows, columns 0으로 인식되는 문제
         return jewels[y][x];
     }
 
@@ -158,6 +208,7 @@ bool Puzzle::swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_l
     int yCount = (prev_loc.second - next_loc.second) * (prev_loc.second - next_loc.second);
     if (xCount != 1 || yCount != 1) return false;
     */
+    //규칙에서 x y 값 중 하나만 1차이 날 시 변경 가능, 둘다 1이상 차이는 대각을 의미함
 
     Jewel buffer = jewels[prev_loc.second][prev_loc.first];
     jewels[prev_loc.second][prev_loc.first] = jewels[next_loc.second][next_loc.first];
