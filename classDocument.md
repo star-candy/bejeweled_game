@@ -29,11 +29,11 @@
 	+ update 호출 시 A, B 기능 중 하나 실행
 	+ A B 기능이 실행된다면 true, chain이 없을 시 false 반환
 	
-  + [] setJewel (보석 좌표, jewel 종류를 인자로 받아 보석 종류 수정)
+  + [0] setJewel (보석 좌표, jewel 종류를 인자로 받아 보석 종류 수정)
 	+ 좌표가 음수, 혹은 jewel vector의 크기 외부에 있을 시 false 반환
 	+ vector 내부에 존재 시 변경 후 true 반환
 
-  + [] getJewel (보석 좌표를 인자로 받음)
+  + [0] getJewel (보석 좌표를 인자로 받음)
 	+ 좌표 유효 시 해당 좌표의 보슥 type을 return
 	+ 비유효 좌표 시 NONE type을 return
 	

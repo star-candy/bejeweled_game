@@ -129,5 +129,24 @@ bool Puzzle::update() {
 
         return true;
     }
+    return false;
+}
 
+bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {
+    int x = loc.first;
+    int y = loc.second;
+    if (x < 0 || x >= num_rows) return false;
+    if (y < 0 || y >= num_columns) return false;
+
+    jewels[y][x] = jewel;
+    return true;
+}
+
+Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
+    int x = loc.first;
+    int y = loc.second;
+    if (x < 0 || x >= num_rows) return Jewel::NONE;
+    if (y < 0 || y >= num_columns) return Jewel::NONE;
+
+    return jewels[y][x];
 }
