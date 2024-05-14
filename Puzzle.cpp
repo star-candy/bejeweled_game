@@ -44,7 +44,7 @@ Puzzle::Puzzle(int num_rows, int num_columns) {
 
 bool Puzzle::initialize(const std::string& jewel_list) {
     int jewelsLength = num_columns * num_rows;
-    if (jewel_list.length() != jewelsLength) return false;
+    //if (jewel_list.length() != jewelsLength) return false;
 
     int jewel_list_set = 0;
     for (int i = 0; i < num_rows; i++) {
@@ -58,8 +58,8 @@ bool Puzzle::initialize(const std::string& jewel_list) {
 
 void Puzzle::randomize() {
     srand((unsigned int)time(NULL));
-    for (int i = 0; i < num_rows; i++) {
-        for (int j = 0; j < num_columns; j++) {
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
             jewels[i][j] = Jewel(rand() % 7);
         }
     }
@@ -144,8 +144,8 @@ bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {
 Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
     int x = loc.first;
     int y = loc.second;
-    if (x < 0 || x >= num_rows) return Jewel::NONE;
-    if (y < 0 || y >= num_columns) return Jewel::NONE;
+    //if (x < 0 || x >= num_rows) return Jewel::NONE;
+    //if (y < 0 || y >= num_columns) return Jewel::NONE;
 
     return jewels[y][x];
 }
