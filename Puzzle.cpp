@@ -2,16 +2,16 @@
 
 char Puzzle::getJewelLetter(Jewel jewel) {
     char letter = ' ';
-    
+
     switch (jewel) {
-    case Jewel::NONE: letter = ' ';     break;	
-    case Jewel::RED: letter = '@';      break;	
+    case Jewel::NONE: letter = ' ';     break;
+    case Jewel::RED: letter = '@';      break;
     case Jewel::ORANGE: letter = '#';   break;
-    case Jewel::YELLOW: letter = '*';   break;	
-    case Jewel::GREEN: letter = '%';    break;	
-    case Jewel::BLUE: letter = '$';     break;	
-    case Jewel::PURPLE: letter = '&';   break;	
-    case Jewel::WHITE: letter = '!';    break;	
+    case Jewel::YELLOW: letter = '*';   break;
+    case Jewel::GREEN: letter = '%';    break;
+    case Jewel::BLUE: letter = '$';     break;
+    case Jewel::PURPLE: letter = '&';   break;
+    case Jewel::WHITE: letter = '!';    break;
     }
     return letter;
 }
@@ -33,6 +33,7 @@ Jewel Puzzle::getJewelType(char letter) {
 }
 
 Puzzle::Puzzle(int num_rows, int num_columns) : num_rows{ num_rows }, num_columns{ num_columns } {
+    srand((unsigned int)time(NULL));
     for (int i = 0; i < num_rows; i++) {
         std::vector<Jewel> insideJewels;
         for (int j = 0; j < num_columns; j++) {
@@ -47,9 +48,9 @@ bool Puzzle::initialize(const std::string& jewel_list) {
     if (jewel_list.length() != jewelsLength) return false;
 
     int jewel_list_set = 0;
-    for (int i = 0; i < num_rows; i++) {
-        for (int j = 0; j < num_columns; j++) {
-            jewels[i][j] = getJewelType(jewel_list[jewel_list_set]);
+    for (int y = 0; y < num_columns; y++) {
+        for (int x = 0; x < num_rows; x++) {
+            jewels[y][x] = getJewelType(jewel_list[jewel_list_set]);
             jewel_list_set++;
         }
     }
@@ -58,96 +59,20 @@ bool Puzzle::initialize(const std::string& jewel_list) {
 
 void Puzzle::randomize() {
     srand((unsigned int)time(NULL));
-    for (int i = 0; i < num_columns; i++) {
-        for (int j = 0; j < num_rows; j++) {
-            jewels[i][j] = Jewel(rand() % 7);
+    for (int y = 0; y < num_columns; y++) {
+        for (int x = 0; x < num_rows; x++) {
+            jewels[y][x] = Jewel(rand() % 7);
         }
     }
-}
-
-bool Puzzle::validCount(int x, int y) {
-    if (x < 0 || x >= num_columns) return false;
-    if (y < 0 || y >= num_rows) return false;
-    return true;
-}
-
-void Puzzle::identifyChain(std::vector<Chain>& chains) {
-    for (int y = 0; y < num_rows; ++y) {
-        for (int x = 0; x < num_columns; ++x) {
-            Jewel currentType = jewels[y][x];
-            if (currentType != Jewel::NONE) {
-                for (int k = 0; k < 4; ++k) {
-                    int count = 1;
-                    int nx = x + xChainCount[k];
-                    int ny = y + yChainCount[k];
-                    while (validCount(nx, ny) && jewels[ny][nx] == currentType) {
-                        count++;
-                        nx += xChainCount[k];
-                        ny += yChainCount[k];
-                    }
-                    if (count >= 3) {
-                        Chain chain;
-                        chain.jewel = currentType;
-                        chain.start.first = x;
-                        chain.start.second = y;
-                        chain.end.first = nx - xChainCount[k]; // 마지막으로 검사된 좌표의 이전 좌표
-                        chain.end.second = ny - yChainCount[k]; // 마지막으로 검사된 좌표의 이전 좌표
-                        chains.push_back(chain);
-                    }
-                }
-            }
-        }
-    }
-}
-
-bool Puzzle::clearChain(std::vector<Chain>& chains) {
-       
-    for (const Chain& chain : chains) {
-        int startX = chain.start.first;
-        int startY = chain.start.second;
-        int endX = chain.end.first;
-        int endY = chain.end.second;
-
-        for (int y = startY; y <= endY; ++y) {
-            for (int x = startX; x <= endX; ++x) {
-                jewels[y][x] = Jewel::NONE;
-            }
-        }
-    }
-        return true;
-}
-
-bool Puzzle::fillJewels() {//이게 왜 되나?, 0.5초 내에 완료 x 시 update 재실행 되는 문제가 있어
-    bool executeCount = false;
-    srand((unsigned int)time(NULL));
-
-    for (int x = 0; x < num_rows; x++) {
-        // 세로 방향 중력에 따라 보석 이동
-        for (int y = num_columns - 1; y >= 0; y--) { // 아래에서 위로 판단
-            if (jewels[x][y] == Jewel::NONE) {
-                executeCount = true;
-
-                // 현재 위치 기준으로 위쪽 줄 값 가져오기
-                for (int z = y; z > 0; z--) { // 아래에서 위로 이동
-                    jewels[x][z] = jewels[x][z-1];
-                }
-                // 랜덤하게 보석 생성
-                jewels[x][0] = Jewel(rand() % 7);
-            }
-        }
-    }
-
-    return executeCount;
 }
 
 bool Puzzle::update() {
-    static std::vector<Chain> chains;
+    static bool updateValidate = true;
     bool executeUpdate = false;
-
     if (updateValidate == true) {//true 시 A기능 구현
         updateValidate = false;
-        identifyChain(chains);
-        executeUpdate = clearChain(chains);
+        identifyChain();
+        executeUpdate = clearChain();
         return executeUpdate;
     }
 
@@ -160,36 +85,136 @@ bool Puzzle::update() {
     return executeUpdate;
 }
 
-bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {
-    int x = loc.first;
-    int y = loc.second;
+bool Puzzle::validCount(int x, int y) {
     if (x < 0 || x >= num_rows) return false;
     if (y < 0 || y >= num_columns) return false;
-
-    jewels[y][x] = jewel;
     return true;
-} 
-
-Jewel Puzzle::getJewel(std::pair<int, int> loc) const {//loc 조건 검사 필요
-    int x = loc.first;
-    int y = loc.second;
-    if (x >= 0 && x < num_rows && y >= 0 && y < num_columns) {//rows, columns 0으로 인식되는 문제
-        return jewels[y][x];
-    }
-
-    return Jewel::NONE; // Puzzle_window의 loc에서 조건검사 이상
 }
 
-bool Puzzle::swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_loc) {
-   /* if (prev_loc.first < 0 || prev_loc.first >= num_rows || next_loc.first < 0 || next_loc.first >= num_rows) return false;
-    if (prev_loc.second < 0 || prev_loc.second >= num_columns || next_loc.second < 0 || next_loc.second >= num_columns) return false;
-    int xCount = (prev_loc.first - next_loc.first) * (prev_loc.first - next_loc.first);
-    int yCount = (prev_loc.second - next_loc.second) * (prev_loc.second - next_loc.second);
-    if (xCount != 1 || yCount != 1) return false;
-    */
-    //규칙에서 x y 값 중 하나만 1차이 날 시 변경 가능, 둘다 1이상 차이는 대각을 의미함
+void Puzzle::identifyChain() {
+    for (int y = 0; y < num_columns; ++y) {
+        for (int x = 0; x < num_rows; ++x) {
+            Jewel currentType = jewels[y][x];
+            if (currentType != Jewel::NONE) {
+                chainValidate(x, y, currentType);
+            }
+        }
+    }
+}
 
-    Jewel buffer = jewels[prev_loc.second][prev_loc.first];
+void Puzzle::chainValidate(int x, int y, Jewel currentType) {
+	std::vector<int> xChainCount = { 0, 0, -1, 1 };
+	std::vector<int> yChainCount = { -1, 1, 0, 0 };
+
+    for (int i = 0; i < 4; ++i) {
+        int count = 1;
+        int nx = x + xChainCount[i];
+        int ny = y + yChainCount[i];
+        while (validCount(nx, ny) && jewels[ny][nx] == currentType) {
+            count++;
+            nx += xChainCount[i];
+            ny += yChainCount[i];
+        }
+        if (count >= 3) {
+            Chain chain;
+            chain.jewel = currentType;
+            chain.start.first = x;
+            chain.start.second = y;
+            chain.end.first = nx - xChainCount[i]; // 마지막으로 검사된 좌표의 이전 좌표
+            chain.end.second = ny - yChainCount[i]; // 마지막으로 검사된 좌표의 이전 좌표
+            chains.push_back(chain);
+        }
+    }
+}
+
+bool Puzzle::clearChain() {
+    for (const Chain& chain : chains) {
+        int startX = chain.start.first;
+        int startY = chain.start.second;
+        int endX = chain.end.first;
+        int endY = chain.end.second;
+
+        for (int y = startY; y <= endY; ++y) {
+            for (int x = startX; x <= endX; ++x) {
+                jewels[y][x] = Jewel::NONE;
+            }
+        }
+    }
+    return true;
+}
+
+bool Puzzle::fillJewels() {//0.5초 내에 완료 x 시 update 재실행 되는 문제, 왜 x y 바꿔야 동작하는가? 
+    /*bool executeCount = false;
+    
+    for (int x = 0; x < num_rows; x++) { // 세로 방향 중력에 따라 보석 이동
+        for (int y = num_columns - 1; y >= 0; y--) { // 아래에서 위로 판단
+            if (jewels[x][y] == Jewel::NONE) {
+                executeCount = true;
+
+                // 현재 위치 기준으로 위쪽 줄 값 가져오기
+                for (int z = y; z > 0; z--) { // 아래에서 위로 이동
+                    jewels[x][z] = jewels[x][z - 1];
+                }
+                // 랜덤하게 보석 생성
+                jewels[x][0] = Jewel(rand() % 7);
+            }
+        }
+    }
+    return executeCount;*/
+    bool executeCount = false;
+
+    for (int y = 0; y < num_columns; y++) {
+        int emptySpaces = 0;
+        for (int x = num_rows - 1; x >= 0; x--) {
+            if (jewels[y][x] == Jewel::NONE) { //세로열에 emptySpace 존재 여부 판단. (왜 행 판단기능에서 동작하나?)
+                emptySpaces++; 
+                executeCount = true;
+            } else if (emptySpaces > 0) { //결국 하나의 열에서는 NONE 공간열이 하나만 존재한다!!
+                jewels[y][x + emptySpaces] = jewels[y][x];//열에 empty공간 발견시 더이상 empty 없을것, empty아래로 상위 jewel 옮기기
+            }
+        }
+        for (int i = 0; i < emptySpaces; i++) {
+            jewels[y][i] = Jewel(rand() % 7); // 맨 위에 새 보석 생성
+        }
+    }
+    return executeCount;
+}
+
+
+bool Puzzle::coordinateValidate(std::pair<int, int>& loc) const {//const 함수 getJewel에 사용 위해 const 태그 추가가
+    bool validate = false;
+    if (loc.first >= 0 && loc.first < num_rows) {
+        if (loc.second >= 0 && loc.second < num_columns) {
+            validate = true;
+        }
+    }
+    return validate;
+}
+
+bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {//loc 검사 필요
+    if (!coordinateValidate(loc)) return false;
+    int x = loc.first;
+    int y = loc.second;
+    
+    jewels[y][x] = jewel;
+    return true;
+}
+
+Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
+    if (!coordinateValidate(loc)) return Jewel::NONE;
+    int x = loc.first;
+    int y = loc.second;
+    return jewels[y][x];
+}
+
+//규칙에서 x y 값 중 하나만 1차이 날 시 변경 가능, 둘다 1이상 차이는 대각을 의미함
+bool Puzzle::swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_loc) {
+    if (!coordinateValidate(prev_loc) || !coordinateValidate(next_loc)) return false;
+    int xCount = abs(next_loc.first - prev_loc.first);
+    int yCount = abs(next_loc.second - prev_loc.second);
+    if (!((xCount == 1 && yCount == 0) || (xCount == 0 && yCount == 1))) return false;
+
+    Jewel buffer = jewels[prev_loc.second][prev_loc.first]; //swap
     jewels[prev_loc.second][prev_loc.first] = jewels[next_loc.second][next_loc.first];
     jewels[next_loc.second][next_loc.first] = buffer;
     return true;

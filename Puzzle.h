@@ -27,8 +27,10 @@ public:
 	void randomize();
 	bool update();
 
-	bool swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_loc);
+	bool coordinateValidate(std::pair<int, int>& loc) const;
 
+	bool swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_loc);
+	
 	bool setJewel(std::pair<int, int> loc, Jewel jewel);
 	Jewel getJewel(std::pair<int, int> loc) const;
 
@@ -41,12 +43,11 @@ public:
 private:
 	int num_rows;
 	int num_columns;
-	bool updateValidate = true;
 	std::vector<std::vector<Jewel>> jewels; //8*8 전체 jewel 저장 벡터
-	std::vector<int> xChainCount = { 0, 0, -1, 1 };
-	std::vector<int> yChainCount = { -1, 1, 0, 0 };
+	std::vector<Chain> chains;		
 	bool validCount(int x, int y);
-	void identifyChain(std::vector<Chain>& chains);
-	bool clearChain(std::vector<Chain>& chains);
+	void identifyChain();
+	void chainValidate(int x, int y, Jewel currentType);
+	bool clearChain();
 	bool fillJewels();
 };

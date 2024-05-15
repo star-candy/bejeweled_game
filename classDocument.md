@@ -19,7 +19,7 @@
   + [0] randomize (모든 jewel을 랜덤하게 초기화)
 	+ rand와 enum 객체 생성으로 int와 jewel type 전환
 	
-  + [] update (chain 존재 시 jewel vector에 update 진행)
+  + [0] update (chain 존재 시 jewel vector에 update 진행)
 	+ A : 모든 체인 식별(수직, 수평 포함), NONE type으로 변경
 		+ [0] validCount : 검사 범위가 jewels vector 범위인지 판단
 		+ [0] identifyChain : chain 존재 여부 검사 후 chains vector에 저장
@@ -29,6 +29,8 @@
 	+ update 호출 시 A, B 기능 중 하나 실행
 	+ A B 기능이 실행된다면 true, chain이 없을 시 false 반환
 	
+  + [0] coordinateValidate (좌표 받아서 유효성 검사, setJewel, getJewel, swapJewel 사용) 
+
   + [0] setJewel (보석 좌표, jewel 종류를 인자로 받아 보석 종류 수정)
 	+ 좌표가 음수, 혹은 jewel vector의 크기 외부에 있을 시 false 반환
 	+ vector 내부에 존재 시 변경 후 true 반환
@@ -40,6 +42,10 @@
   + [0] swapJewels (swap 위한 보석 좌표 2개를 인자로 받음)
 	+ 좌표 위치 검증(jewel vector 내에 있는가, 두 위치가 인접한가)->false 반환
 	+ jewels vector에서 두 좌표의 type swap -> true 반환
+
+	--------------------------------------------------------------------------------------
+
+
 	
 ## 사용자 ui 구현하기
 - main_text.cpp
