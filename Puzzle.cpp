@@ -72,31 +72,6 @@ bool Puzzle::validCount(int x, int y) {
 }
 
 void Puzzle::identifyChain(std::vector<Chain>& chains) {
-    /*for (int y = 0; y < num_rows; y++) {
-        for (int x = 0; x < num_columns; x++) {
-            Jewel currentType = jewels[y][x];
-            for (int k = 0; k < 4; ++k) {
-                int count = 1;
-                int nx = x + xChainCount[k];
-                int ny = y + yChainCount[k];
-                while (validCount(nx, ny) && jewels[ny][nx] == currentType) {
-                    count++;
-                    nx += xChainCount[k];
-                    ny += yChainCount[k];
-                }
-                if (count >= 3) {
-                    Chain chain;
-                    chain.jewel = currentType;
-                    chain.start.first = x;
-                    chain.start.second = y;
-                    chain.end.first = nx;
-                    chain.end.second = ny;
-                    chains.push_back(chain);
-                }
-            }
-        }
-    }
-    */
     for (int y = 0; y < num_rows; ++y) {
         for (int x = 0; x < num_columns; ++x) {
             Jewel currentType = jewels[y][x];
@@ -126,15 +101,8 @@ void Puzzle::identifyChain(std::vector<Chain>& chains) {
 }
 
 bool Puzzle::clearChain(std::vector<Chain>& chains) {
-    /*for (int chainsCount = 0; chainsCount < chains.size(); chainsCount++) {//vector 요소 찾기 size가 아닌가
-        for (int y = chains[chainsCount].start.second; y < chains[chainsCount].end.second; y++) {
-            for (int x = chains[chainsCount].start.first; x < chains[chainsCount].end.first; x++) {
-                jewels[y][x] = Jewel::NONE;
-            }
-        }
-    }*/
-    
-    for (Chain chain : chains) {
+       
+    for (const Chain& chain : chains) {
         int startX = chain.start.first;
         int startY = chain.start.second;
         int endX = chain.end.first;
@@ -149,25 +117,35 @@ bool Puzzle::clearChain(std::vector<Chain>& chains) {
         return true;
 }
 
-bool Puzzle::fillJewels() {
+bool Puzzle::fillJewels() {//이게 왜 되나?, 0.5초 내에 완료 x 시 update 재실행 되는 문제가 있어
     bool executeCount = false;
     srand((unsigned int)time(NULL));
-    for (int y = 0; y < num_columns; y++) {
-        for (int x = 0; x < num_rows; x++) {
-            if (jewels[y][x] == Jewel::NONE) {
-                jewels[y][x] = Jewel(rand() % 7);
+
+    for (int x = 0; x < num_rows; x++) {
+        // 세로 방향 중력에 따라 보석 이동
+        for (int y = num_columns - 1; y >= 0; y--) { // 아래에서 위로 판단
+            if (jewels[x][y] == Jewel::NONE) {
                 executeCount = true;
+
+                // 현재 위치 기준으로 위쪽 줄 값 가져오기
+                for (int z = y; z > 0; z--) { // 아래에서 위로 이동
+                    jewels[x][z] = jewels[x][z-1];
+                }
+                // 랜덤하게 보석 생성
+                jewels[x][0] = Jewel(rand() % 7);
             }
         }
     }
+
     return executeCount;
 }
 
 bool Puzzle::update() {
+    static std::vector<Chain> chains;
     bool executeUpdate = false;
+
     if (updateValidate == true) {//true 시 A기능 구현
         updateValidate = false;
-        std::vector<Chain> chains;
         identifyChain(chains);
         executeUpdate = clearChain(chains);
         return executeUpdate;
@@ -176,6 +154,7 @@ bool Puzzle::update() {
     if (updateValidate == false) {//false 시 B기능 구현
         updateValidate = true;
         executeUpdate = fillJewels();
+        chains.clear();
         return executeUpdate;
     }
     return executeUpdate;
@@ -189,7 +168,7 @@ bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {
 
     jewels[y][x] = jewel;
     return true;
-}
+} 
 
 Jewel Puzzle::getJewel(std::pair<int, int> loc) const {//loc 조건 검사 필요
     int x = loc.first;
