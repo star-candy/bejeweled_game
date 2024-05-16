@@ -22,7 +22,9 @@
   + [0] update (chain 존재 시 jewel vector에 update 진행)
 	+ A : 모든 체인 식별(수직, 수평 포함), NONE type으로 변경
 		+ [0] validCount : 검사 범위가 jewels vector 범위인지 판단
-		+ [0] identifyChain : chain 존재 여부 검사 후 chains vector에 저장
+		+ [0] identifyChain : jewels vector 전체에 대한 type과 좌표 정보 제공
+		+ [0] createChain : countChain 정보를 통해 chain 생성 및 pushback
+		+ [0] countChain : 가로, 세로 위치에 같은 타입 개수 정보 제공
 		+ [0] claerChain : chain 좌표에 포함된 jewels의 type을 NONE으로 변경
 	+ B : NONE type jewel을 상위 보석 떨어뜨려 채우고, 위쪽 빈공간은 랜덤하게 매운다
 		+ [0] fillJewels : none type인 jewels에 랜덤하게 값 채워넣기

@@ -47,7 +47,8 @@ private:
 	std::vector<Chain> chains;		
 	bool validCount(int x, int y);
 	void identifyChain();
-	void chainValidate(int x, int y, Jewel currentType);
+	void createChain(int x, int y, Jewel currentType);
+	int countChain(int x, int y, Jewel currentType, int dx, int dy);
 	bool clearChain();
 	bool fillJewels();
 };

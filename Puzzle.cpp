@@ -96,36 +96,49 @@ void Puzzle::identifyChain() {
         for (int x = 0; x < num_rows; ++x) {
             Jewel currentType = jewels[y][x];
             if (currentType != Jewel::NONE) {
-                chainValidate(x, y, currentType);
+                createChain(x, y, currentType);
             }
         }
     }
 }
 
-void Puzzle::chainValidate(int x, int y, Jewel currentType) {
-	std::vector<int> xChainCount = { 0, 0, -1, 1 };
-	std::vector<int> yChainCount = { -1, 1, 0, 0 };
+void Puzzle::createChain(int x, int y, Jewel currentType) {
+    int rowCount = countChain(x, y, currentType, 1, 0);
+    if (rowCount >= 3) {
+        Chain chain;
+        chain.jewel = currentType;
+        chain.start.first = x;
+        chain.start.second = y;
+        chain.end.first = x + rowCount - 1;
+        chain.end.second = y;
+        chains.push_back(chain);
+    }
 
-    for (int i = 0; i < 4; ++i) {
-        int count = 1;
-        int nx = x + xChainCount[i];
-        int ny = y + yChainCount[i];
-        while (validCount(nx, ny) && jewels[ny][nx] == currentType) {
-            count++;
-            nx += xChainCount[i];
-            ny += yChainCount[i];
-        }
-        if (count >= 3) {
-            Chain chain;
-            chain.jewel = currentType;
-            chain.start.first = x;
-            chain.start.second = y;
-            chain.end.first = nx - xChainCount[i]; // 마지막으로 검사된 좌표의 이전 좌표
-            chain.end.second = ny - yChainCount[i]; // 마지막으로 검사된 좌표의 이전 좌표
-            chains.push_back(chain);
-        }
+    int colCount = countChain(x, y, currentType, 0, 1);
+    if (colCount >= 3) {
+        Chain chain;
+        chain.jewel = currentType;
+        chain.start.first = x;
+        chain.start.second = y;
+        chain.end.first = x;
+        chain.end.second = y + colCount - 1;
+        chains.push_back(chain);
     }
 }
+
+int Puzzle::countChain(int x, int y, Jewel currentType, int dx, int dy) {
+    int count = 1;
+    int nx = x + dx;
+    int ny = y + dy;
+    while (validCount(nx, ny) && jewels[ny][nx] == currentType) {
+        count++;
+        nx += dx;
+        ny += dy;
+    }
+    return count;
+}
+
+
 
 bool Puzzle::clearChain() {
     for (const Chain& chain : chains) {
