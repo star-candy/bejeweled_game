@@ -138,8 +138,6 @@ int Puzzle::countChain(int x, int y, Jewel currentType, int dx, int dy) {
     return count;
 }
 
-
-
 bool Puzzle::clearChain() {
     for (const Chain& chain : chains) {
         int startX = chain.start.first;
@@ -157,32 +155,16 @@ bool Puzzle::clearChain() {
 }
 
 bool Puzzle::fillJewels() {//0.5초 내에 완료 x 시 update 재실행 되는 문제, 왜 x y 바꿔야 동작하는가? 
-    /*bool executeCount = false;
-    
-    for (int x = 0; x < num_rows; x++) { // 세로 방향 중력에 따라 보석 이동
-        for (int y = num_columns - 1; y >= 0; y--) { // 아래에서 위로 판단
-            if (jewels[x][y] == Jewel::NONE) {
-                executeCount = true;
-
-                // 현재 위치 기준으로 위쪽 줄 값 가져오기
-                for (int z = y; z > 0; z--) { // 아래에서 위로 이동
-                    jewels[x][z] = jewels[x][z - 1];
-                }
-                // 랜덤하게 보석 생성
-                jewels[x][0] = Jewel(rand() % 7);
-            }
-        }
-    }
-    return executeCount;*/
     bool executeCount = false;
 
     for (int y = 0; y < num_columns; y++) {
         int emptySpaces = 0;
         for (int x = num_rows - 1; x >= 0; x--) {
             if (jewels[y][x] == Jewel::NONE) { //세로열에 emptySpace 존재 여부 판단. (왜 행 판단기능에서 동작하나?)
-                emptySpaces++; 
+                emptySpaces++;
                 executeCount = true;
-            } else if (emptySpaces > 0) { //결국 하나의 열에서는 NONE 공간열이 하나만 존재한다!!
+            }
+            else if (emptySpaces > 0) { //결국 하나의 열에서는 NONE 공간열이 하나만 존재한다!!
                 jewels[y][x + emptySpaces] = jewels[y][x];//열에 empty공간 발견시 더이상 empty 없을것, empty아래로 상위 jewel 옮기기
             }
         }
@@ -204,22 +186,6 @@ bool Puzzle::coordinateValidate(std::pair<int, int>& loc) const {//const 함수 ge
     return validate;
 }
 
-bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {//loc 검사 필요
-    if (!coordinateValidate(loc)) return false;
-    int x = loc.first;
-    int y = loc.second;
-    
-    jewels[y][x] = jewel;
-    return true;
-}
-
-Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
-    if (!coordinateValidate(loc)) return Jewel::NONE;
-    int x = loc.first;
-    int y = loc.second;
-    return jewels[y][x];
-}
-
 //규칙에서 x y 값 중 하나만 1차이 날 시 변경 가능, 둘다 1이상 차이는 대각을 의미함
 bool Puzzle::swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_loc) {
     if (!coordinateValidate(prev_loc) || !coordinateValidate(next_loc)) return false;
@@ -231,4 +197,31 @@ bool Puzzle::swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_l
     jewels[prev_loc.second][prev_loc.first] = jewels[next_loc.second][next_loc.first];
     jewels[next_loc.second][next_loc.first] = buffer;
     return true;
+}
+
+bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {//loc 검사 필요
+    if (!coordinateValidate(loc)) return false;
+    int x = loc.first;
+    int y = loc.second;
+
+    jewels[y][x] = jewel;
+    return true;
+}
+
+Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
+    if (!coordinateValidate(loc)) return Jewel::NONE;
+    int x = loc.first;
+    int y = loc.second;
+    return jewels[y][x];
+}
+
+void Puzzle::jewelsToTextVector(std::vector<std::vector<char>>& jewelsText) {
+    std::vector<char> textJewelColumns(8);
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            textJewelColumns[j] = getJewelLetter(jewels[i][j]);
+        }
+        jewelsText.push_back(textJewelColumns);
+    }
+
 }

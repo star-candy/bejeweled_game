@@ -1,4 +1,4 @@
-/*#include "Puzzle.h"
+#include "Puzzle.h"
 
 #include <iostream>
 #include <vector>
@@ -19,4 +19,4 @@ int main()
 
 	return 0;
 }
-*/
+

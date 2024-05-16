@@ -154,7 +154,6 @@
   <ItemGroup>
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GUI.cpp" />
-    <ClCompile Include="main_gui.cpp" />
     <ClCompile Include="main_text.cpp" />
     <ClCompile Include="Puzzle.cpp" />
     <ClCompile Include="Puzzle_window.cpp" />

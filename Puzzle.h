@@ -1,10 +1,9 @@
 #pragma once
 
+#include "std_lib_facilities.h";
 #include <utility>
 #include <string>
 #include <vector>
-#include <cstdlib> //rand함수 사용 위한 헤더 추가
-#include <ctime> //time함수 사용 위한 헤더 추가
 
 enum class Jewel
 {
@@ -40,11 +39,16 @@ public:
 	static Jewel getJewelType(char letter);
 	static char getJewelLetter(Jewel jewel);
 
+	//text ui 사용 함수
+	void jewelsToTextVector(std::vector<std::vector<char>>& jewelsText);
+	void printTextJewels(vector<String>& jewelsText);
+
+
 private:
 	int num_rows;
 	int num_columns;
 	std::vector<std::vector<Jewel>> jewels; //8*8 전체 jewel 저장 벡터
-	std::vector<Chain> chains;		
+	std::vector<Chain> chains;
 	bool validCount(int x, int y);
 	void identifyChain();
 	void createChain(int x, int y, Jewel currentType);

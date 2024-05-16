@@ -47,9 +47,21 @@
 
 	--------------------------------------------------------------------------------------
 
-
-	
 ## 사용자 ui 구현하기
 - main_text.cpp
+  + []  createTextJewels (Jewel type인 jewels vector를 text vector로 변환하는 기능)
+	+ 
+	+ 
+  + [] printTextJewels (형식에 맞게 text vector 출력)
+	+ 열 단위로 출력해서 형식에 맞게 구성
+	+ 
+  + [] 
+	+ 
+	+ 
   + []
 	+ 
+	+ 
+  + []
+	+ 
+	+ 
+
