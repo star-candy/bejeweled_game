@@ -3,10 +3,9 @@
 
 ## puzzle.cpp/.h 구현하기
 
-- puzzle.cpp
-  + [0] getjewelLetter function 구현 (보석 type에 맞는 text 반환) 
-	
-  + [0] getJewlType function 구현 (text 입력시 입력에 해당하는 보석 type 반환)
+- puzzle class 
+  + [0] getjewelLetter (보석 type에 맞는 text 반환) 
+  + [0] getJewlType (text 입력시 입력에 해당하는 보석 type 반환)
 	
   + [0] puzzle constructor (게임의 가로, 세로 개수를 인자로 받음, 행 + 열 크기를 vector 크기로)
 	+ 모든 jewel 을 NONE으로 초기화
@@ -48,6 +47,22 @@
 	--------------------------------------------------------------------------------------
 
 ## 사용자 ui 구현하기
+- Text_Puzzle class
+
+  + [0] constructor (게임의 가로, 세로 개수를 인자로 받음, 행 + 열 크기를 vector 크기로)
+	+ 모든 jewel 을 NONE으로 초기화
+	+ vector 명은 jewels
+
+  + [0] getjewelLetter (보석 type에 맞는 text 반환) 
+  + [0] getJewlType (text 입력시 입력에 해당하는 보석 type 반환)
+	
+  
+
+
+
+
+## text based bejeweled 게임 구현
+
 - main_text.cpp
   + []  createTextJewels (Jewel type인 jewels vector를 text vector로 변환하는 기능)
 	+ 

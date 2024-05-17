@@ -245,10 +245,6 @@ void Text_Puzzle::printTextJewels() {
         }
         std::cout << "\n";
     }
-
-
-
-
     /* 0 1 2 3 4 5 6 7
       +---------------    
     0 |! ! ! ! ! ! ! ! 
@@ -259,6 +255,5 @@ void Text_Puzzle::printTextJewels() {
     5 |
     6 |
     7 |
-    
     */
 }

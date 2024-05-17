@@ -32,8 +32,7 @@ public:
 	
 	bool setJewel(std::pair<int, int> loc, Jewel jewel);
 	Jewel getJewel(std::pair<int, int> loc) const;
-	std::vector<std::vector<Jewel>> getJewels() const { return jewels; }//자식 class 내에서 활용 ??
-
+	//std::vector<std::vector<Jewel>> getJewels() const { return jewels; }//자식 class 내에서 활용 ??
 
 	inline int getNumRows() const { return num_rows; }
 	inline int getNumColumns() const { return num_columns; }
@@ -49,7 +48,6 @@ private:
 	int num_rows;
 	int num_columns;
 	std::vector<std::vector<Jewel>> jewels; //8*8 전체 jewel 저장 벡터
-	std::vector<std::vector<char>> jewelsText; // 8*8 전체 jewel을 text type으로 저장 벡터
 	std::vector<Chain> chains;
 	bool validCount(int x, int y);
 	void identifyChain();
@@ -66,5 +64,5 @@ public:
 	void jewelsToTextVector();
 	void printTextJewels();
 private:
-	std::vector<std::vector<char>> textJewels;
+	std::vector<std::vector<char>> textJewels; //8 * 8 전체 jewel을 text type으로 저장 벡터
 };
