@@ -215,13 +215,16 @@ Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
     return jewels[y][x];
 }
 
-void Puzzle::jewelsToTextVector(std::vector<std::vector<char>>& jewelsText) {
+//----------- text ui function
+
+void Text_Puzzle::jewelsToTextVector() {
+    textJewels.clear();
+
     std::vector<char> textJewelColumns(8);
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            textJewelColumns[j] = getJewelLetter(jewels[i][j]);
+            textJewelColumns[j] = getJewelLetter(getJewel(std::make_pair(j, i)));
         }
-        jewelsText.push_back(textJewelColumns);
+        textJewels.push_back(textJewelColumns);
     }
-
 }

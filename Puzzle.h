@@ -1,6 +1,6 @@
 #pragma once
 
-#include "std_lib_facilities.h";
+#include "std_lib_facilities.h"
 #include <utility>
 #include <string>
 #include <vector>
@@ -32,6 +32,8 @@ public:
 	
 	bool setJewel(std::pair<int, int> loc, Jewel jewel);
 	Jewel getJewel(std::pair<int, int> loc) const;
+	std::vector<std::vector<Jewel>> getJewels() const { return jewels; }//자식 class 내에서 활용 ??
+
 
 	inline int getNumRows() const { return num_rows; }
 	inline int getNumColumns() const { return num_columns; }
@@ -40,14 +42,14 @@ public:
 	static char getJewelLetter(Jewel jewel);
 
 	//text ui 사용 함수
-	void jewelsToTextVector(std::vector<std::vector<char>>& jewelsText);
-	void printTextJewels(vector<String>& jewelsText);
+	
 
 
 private:
 	int num_rows;
 	int num_columns;
 	std::vector<std::vector<Jewel>> jewels; //8*8 전체 jewel 저장 벡터
+	std::vector<std::vector<char>> jewelsText; // 8*8 전체 jewel을 text type으로 저장 벡터
 	std::vector<Chain> chains;
 	bool validCount(int x, int y);
 	void identifyChain();
@@ -55,4 +57,12 @@ private:
 	int countChain(int x, int y, Jewel currentType, int dx, int dy);
 	bool clearChain();
 	bool fillJewels();
+};
+
+class Text_Puzzle : public Puzzle {
+public:
+	void jewelsToTextVector();
+	void printTextJewels();
+private:
+	std::vector<std::vector<char>> textJewels;
 };
