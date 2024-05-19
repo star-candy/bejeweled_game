@@ -248,11 +248,12 @@ void Text_Puzzle::printTextJewels() {
         }
         cout << "\n";
     }
+    cout << "\n";
 }
 
 int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {//예외값 발생 시 오류 출력 후 재실행
     int input = 0;
-    while (1) {
+    try {
         cout << "<<< BEJEWELED >>>\n\n";
         cout << "[1] Start a new random puzzle\n";
         cout << "[2] Start a pre-defined random puzzle\n";
@@ -261,6 +262,12 @@ int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {//예외값 발�
         cout << "> Choose a menu option (1~3): ";
         cin >> input;
         cout << "\n";
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 입력 버퍼 제거
+            error("정수형의 값이 입력되어야 합니다.");
+        }
+        if (input < 1 || input > 3) error("1~3 사이 정수가 입력되어야 합니다.");
 
         if (input == 1) {
             randomize();
@@ -274,43 +281,68 @@ int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {//예외값 발�
             int predPuzzle;
             cout << ">Choose a puzzle option (0~3): ";
             cin >> predPuzzle;
-            cout << "\n";
-            if (predPuzzle < 4 && predPuzzle > -1) {
-                initialize(predefined_puzzles[predPuzzle]);
-                printTextJewels();
-                while (update()) {
-                    printTextJewels();
-                }
-                return 2;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 입력 버퍼 제거
+                error("정수형의 값이 입력되어야 합니다.");
             }
+            cout << "\n";
+
+            if (predPuzzle < 0 || predPuzzle > 3) error("0~3 사이의 정수가 입력되어야 합니다.");
+
+            initialize(predefined_puzzles[predPuzzle]);
+            printTextJewels();
+            while (update()) {
+                printTextJewels();
+            }
+            return 2;
         }
         if (input == 3) {
             return 3;
         }
     }
+    catch (runtime_error& e) {
+        cout << e.what() << "\n\n";
+        initialScreen(predefined_puzzles);
+    }
     return 0;
 }
 
 bool Text_Puzzle::swapScreen() {//예외값 발생 시 오류 출력 후 재실행
-    int firstX, secondX, firstY, secondY;
-    cout << "input the first swap position (row, col):";
-    cin >> firstX >> firstY;
-    cout << "\n";
-    cout << "input the second swap position (row, col):";
-    cin >> secondX >> secondY;
-    cout << "\n";
+    try {
+        bool swapValidate = false;
+        int firstX, secondX, firstY, secondY;
 
-    if (firstX == 0 && secondX == 0 && firstY == 0 && secondY == 0) return false;
+        cout << "input the first swap position (row, col):";
+        cin >> firstX >> firstY;
+        cout << "\n";
+        cout << "input the second swap position (row, col):";
+        cin >> secondX >> secondY;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 입력 버퍼 제거
+            error("정수형의 값이 입력되어야 합니다.");
+        }
+        cout << "\n";
 
-    pair<int, int> prev = make_pair(firstX, firstY);
-    pair<int, int> next = make_pair(secondX, secondY);
+        if (firstX == 0 && secondX == 0 && firstY == 0 && secondY == 0) return false;
 
-    swapJewels(prev, next);
-    printTextJewels();
-    while (update()) {
+        pair<int, int> prev = make_pair(firstX, firstY);
+        pair<int, int> next = make_pair(secondX, secondY);
+
+        if (!swapJewels(prev, next)) {
+            error("적절한 이동 위치가 아닙니다.");
+        }
+
         printTextJewels();
-    }
-    
-    return true;
+        while (update()) {
+            printTextJewels();
+        }
 
+        return true;
+    }
+    catch (runtime_error& e) {
+        cout << e.what() << "\n\n";
+        swapScreen();
+    }
 }
