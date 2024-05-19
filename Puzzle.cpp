@@ -154,26 +154,27 @@ bool Puzzle::clearChain() {
     return true;
 }
 
-bool Puzzle::fillJewels() {//0.5초 내에 완료 x 시 update 재실행 되는 문제, 왜 x y 바꿔야 동작하는가? 
+bool Puzzle::fillJewels() {
     bool executeCount = false;
 
     for (int y = 0; y < num_columns; y++) {
         int emptySpaces = 0;
         for (int x = num_rows - 1; x >= 0; x--) {
-            if (jewels[y][x] == Jewel::NONE) { //세로열에 emptySpace 존재 여부 판단. (왜 행 판단기능에서 동작하나?)
+            if (jewels[x][y] == Jewel::NONE) { //세로열에 emptySpace 존재 여부 판단. (왜 행 판단기능에서 동작하나?)
                 emptySpaces++;
                 executeCount = true;
             }
             else if (emptySpaces > 0) { //결국 하나의 열에서는 NONE 공간열이 하나만 존재한다!!
-                jewels[y][x + emptySpaces] = jewels[y][x];//열에 empty공간 발견시 더이상 empty 없을것, empty아래로 상위 jewel 옮기기
+                jewels[x + emptySpaces][y] = jewels[x][y];//열에 empty공간 발견시 더이상 empty 없을것, empty아래로 상위 jewel 옮기기
             }
         }
         for (int i = 0; i < emptySpaces; i++) {
-            jewels[y][i] = Jewel(rand() % 7); // 맨 위에 새 보석 생성
+            jewels[i][y] = Jewel(rand() % 7); // 맨 위에 새 보석 생성
         }
     }
     return executeCount;
 }
+//0.5초 내에 완료 x 시 update 재실행 되는 문제 / grapic ui에서는 x,y를 바꿔야 중력이 정상 작동하는 문제
 
 
 bool Puzzle::coordinateValidate(std::pair<int, int>& loc) const {//const 함수 getJewel에 사용 위해 const 태그 추가가

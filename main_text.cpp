@@ -34,7 +34,4 @@ int main()
 
 	return 0;
 }
-//initialScreen 값으로 main 전체 while 묶기
-//내부 swapScreen false 전까지 무한 반복  00 00 입력 시 false 출력될 것
-// swap 종료 시 initialScreen 출력문으로 복귀하기
-// 내부 오류 대해서는 함수 내부에서 if error 함수로 관리한다.
+// 중력 좌우 변경 문제 발생, 상 하 중력으로 변경 필요
