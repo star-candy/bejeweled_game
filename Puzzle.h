@@ -32,7 +32,6 @@ public:
 	
 	bool setJewel(std::pair<int, int> loc, Jewel jewel);
 	Jewel getJewel(std::pair<int, int> loc) const;
-	bool updateValidate = true;
 	void updateReset() { updateValidate = true; }
 
 	inline int getNumRows() const { return num_rows; }
@@ -48,6 +47,7 @@ public:
 private:
 	int num_rows;
 	int num_columns;
+	bool updateValidate = true;
 	std::vector<std::vector<Jewel>> jewels; //8*8 전체 jewel 저장 벡터
 	std::vector<Chain> chains;
 	bool validCount(int x, int y);

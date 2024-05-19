@@ -335,6 +335,7 @@ bool Text_Puzzle::swapScreen() {//예외값 발생 시 오류 출력 후 재실행
         }
 
         printTextJewels();
+        updateReset();
         while (update()) {
             printTextJewels();
         }
