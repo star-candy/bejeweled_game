@@ -67,7 +67,6 @@ void Puzzle::randomize() {
 }
 
 bool Puzzle::update() {
-    static bool updateValidate = true;
     bool executeUpdate = false;
     if (updateValidate == true) {//true 시 A기능 구현
         updateValidate = false; 
@@ -291,7 +290,8 @@ int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {//예외값 발�
             if (predPuzzle < 0 || predPuzzle > 3) error("0~3 사이의 정수가 입력되어야 합니다.");
 
             initialize(predefined_puzzles[predPuzzle]);
-            printTextJewels();
+            printTextJewels();// 초기화 후 바로 출력으로 인해 00 00 입력 후 초기화 벡터 update 이뤄지지 않음
+            updateReset();
             while (update()) {
                 printTextJewels();
             }

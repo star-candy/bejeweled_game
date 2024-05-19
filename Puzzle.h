@@ -32,7 +32,8 @@ public:
 	
 	bool setJewel(std::pair<int, int> loc, Jewel jewel);
 	Jewel getJewel(std::pair<int, int> loc) const;
-	//std::vector<std::vector<Jewel>> getJewels() const { return jewels; }//자식 class 내에서 활용 ??
+	bool updateValidate = true;
+	void updateReset() { updateValidate = true; }
 
 	inline int getNumRows() const { return num_rows; }
 	inline int getNumColumns() const { return num_columns; }
