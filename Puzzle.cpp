@@ -236,14 +236,15 @@ void Text_Puzzle::jewelsToTextVector() {
 }
  
 void Text_Puzzle::printTextJewels() {
-    
+    jewelsToTextVector();
+
     std::cout << "   0 1 2 3 4 5 6 7\n  +---------------\n";
     for (int y = 0; y < 8; y++) {
-        std::cout << y << " |";
+        cout << y << " |";
         for (int x = 0; x < 8; x++) {
-            std::cout << textJewels[y][x] << " ";
+            cout << textJewels[y][x] << " ";
         }
-        std::cout << "\n";
+        cout << "\n";
     }
     /* 0 1 2 3 4 5 6 7
       +---------------    
@@ -256,4 +257,62 @@ void Text_Puzzle::printTextJewels() {
     6 |
     7 |
     */
+}
+
+int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {//error함수로 예외값 발생 시 오류 출력 후 재실행
+    int input = 0;
+    cout << "<<< BEJEWELED >>>\n\n";
+    cout << "[1] Start a new random puzzle\n";
+    cout << "[2] Start a pre-defined random puzzle\n";
+    cout << "[3] Exit\n\n";
+
+    cout << "> Choose a menu option (1~3): ";
+    cin >> input;
+    cout << "\n";
+
+    if (input == 1) {
+        randomize();
+        printTextJewels();
+    }
+    if (input == 2) {
+        int predPuzzle;
+        cout << ">Choose a puzzle option (0~3): ";
+        cin >> predPuzzle;
+        if (predPuzzle < 4 && predPuzzle > -1) {
+            initialize(predefined_puzzles[predPuzzle]);
+            printTextJewels();
+            return 2;
+        }
+        return 0;
+    }
+    if (input == 3) {
+        return 3;
+    }
+
+
+    return 0;
+}
+
+bool Text_Puzzle::swapScreen() {//error 함수로 예외값 발생 시 오류 출력 후 재실행
+    int firstX, secondX, firstY, secondY;
+    cout << "input the first swap position (row, col):";
+    cin >> firstX >> firstY;
+    cout << "\n";
+    cout << "input the second swap position (row, col):";
+    cin >> secondX >> secondY;
+    cout << "\n";
+
+    if (firstX == 0 && secondX == 0 && firstY == 0 && secondY == 0) return false;
+
+    pair<int, int> prev = make_pair(firstX, firstY);
+    pair<int, int> next = make_pair(secondX, secondY);
+
+    swapJewels(prev, next);
+    printTextJewels();
+    while (update()) {
+        printTextJewels();
+    }
+    
+    return true;
+
 }

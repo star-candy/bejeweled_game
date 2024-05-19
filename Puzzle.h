@@ -61,8 +61,10 @@ class Text_Puzzle : public Puzzle {
 public:
 	Text_Puzzle(int num_rows, int num_columns); 
 
-	void jewelsToTextVector();
 	void printTextJewels();
+	int initialScreen(vector<string>& predefined_puzzles);
+	bool swapScreen();
 private:
 	std::vector<std::vector<char>> textJewels; //8 * 8 전체 jewel을 text type으로 저장 벡터
+	void jewelsToTextVector();
 };
