@@ -58,7 +58,6 @@ bool Puzzle::initialize(const std::string& jewel_list) {
 }
 
 void Puzzle::randomize() {
-    srand((unsigned int)time(NULL));
     for (int y = 0; y < num_columns; y++) {
         for (int x = 0; x < num_rows; x++) {
             jewels[y][x] = Jewel(rand() % 7);
@@ -130,20 +129,21 @@ void Puzzle::createChain(int x, int y, Jewel currentType) {
     }
 }
 
-int Puzzle::countChain(int x, int y, Jewel currentType, int dx, int dy) {
+int Puzzle::countChain(int x, int y, Jewel currentType, int nextX, int nextY) {
     int count = 1;
-    int nx = x + dx;
-    int ny = y + dy;
+    int nx = x + nextX;
+    int ny = y + nextY;
     while (validCount(nx, ny) && jewels[ny][nx] == currentType) {
         count++;
-        nx += dx;
-        ny += dy;
+        nx += nextX;
+        ny += nextY;
     }
     return count;
 }
 
 bool Puzzle::clearChain() {
-    for (const Chain& chain : chains) {
+    for (int i = 0; i < chains.size(); i++) {
+        Chain& chain = chains[i];
         int startX = chain.start.first;
         int startY = chain.start.second;
         int endX = chain.end.first;
@@ -165,12 +165,12 @@ bool Puzzle::fillJewels() {
     for (int y = 0; y < num_columns; y++) {
         int emptySpaces = 0;
         for (int x = num_rows - 1; x >= 0; x--) {
-            if (jewels[x][y] == Jewel::NONE) { //세로열에 emptySpace 존재 여부 판단. (왜 행 판단기능에서 동작하나?)
+            if (jewels[x][y] == Jewel::NONE) { //세로열에 emptySpace 존재 여부 판단.
                 emptySpaces++;
                 executeCount = true;
             }
-            else if (emptySpaces > 0) { //결국 하나의 열에서는 NONE 공간열이 하나만 존재한다!!
-                jewels[x + emptySpaces][y] = jewels[x][y];//열에 empty공간 발견시 더이상 empty 없을것, empty아래로 상위 jewel 옮기기
+            else if (emptySpaces > 0) { //하나의 열에서는 NONE 열이 하나만 존재한다!!
+                jewels[x + emptySpaces][y] = jewels[x][y];//empty공간 발견시 더이상 empty 없을것, empty아래로 상위 jewel 옮기기
             }
         }
         for (int i = 0; i < emptySpaces; i++) {
@@ -179,8 +179,6 @@ bool Puzzle::fillJewels() {
     }
     return executeCount;
 }
-//0.5초 내에 완료 x 시 update 재실행 되는 문제 / grapic ui에서는 x,y를 바꿔야 중력이 정상 작동하는 문제
-
 
 bool Puzzle::coordinateValidate(std::pair<int, int>& loc) const {//const 함수 getJewel에 사용 위해 const 태그 추가가
     bool validate = false;
