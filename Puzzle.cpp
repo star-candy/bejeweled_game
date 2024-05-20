@@ -69,15 +69,20 @@ void Puzzle::randomize() {
 bool Puzzle::update() {
     bool executeUpdate = false;
     if (updateValidate == true) {//true 시 A기능 구현
-        updateValidate = false; 
         identifyChain();
-        executeUpdate = clearChain();//clearChain은 무조건 true를 반환하는 문제
+        if (clearChain()) {
+            executeUpdate = true;
+            updateValidate = false;
+        }
         return executeUpdate;
     }
 
     if (updateValidate == false) {//false 시 B기능 구현
-        updateValidate = true;
-        executeUpdate = fillJewels();
+        if (fillJewels()) {
+            executeUpdate = true;
+            updateValidate = true;
+        }
+
         chains.clear();
         return executeUpdate;
     }
@@ -250,7 +255,7 @@ void Text_Puzzle::printTextJewels() {
     cout << "\n";
 }
 
-int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {//예외값 발생 시 오류 출력 후 재실행
+int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {
     int input = 0;
     try {
         cout << "<<< BEJEWELED >>>\n\n";
@@ -291,7 +296,6 @@ int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {//예외값 발�
 
             initialize(predefined_puzzles[predPuzzle]);
             printTextJewels();// 초기화 후 바로 출력으로 인해 00 00 입력 후 초기화 벡터 update 이뤄지지 않음
-            updateReset();
             while (update()) {
                 printTextJewels();
             }
@@ -335,7 +339,6 @@ bool Text_Puzzle::swapScreen() {//예외값 발생 시 오류 출력 후 재실행
         }
 
         printTextJewels();
-        updateReset();
         while (update()) {
             printTextJewels();
         }

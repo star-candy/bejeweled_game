@@ -64,19 +64,18 @@
 ## text based bejeweled 게임 구현
 
 - main_text.cpp
-  + []  createTextJewels (Jewel type인 jewels vector를 text vector로 변환하는 기능)
-	+ 
-	+ 
-  + [] printTextJewels (형식에 맞게 text vector 출력)
+  + [0]  createTextJewels (Jewel type인 jewels vector를 text vector로 변환하는 기능)
+	
+  + [0] printTextJewels (형식에 맞게 text vector 출력)
 	+ 열 단위로 출력해서 형식에 맞게 구성
-	+ 
-  + [] 
-	+ 
-	+ 
-  + []
-	+ 
-	+ 
-  + []
-	+ 
-	+ 
+	
+  + [0] initialScreen (게임 초기 화면에서의 입력 수행 및 jewels 변형해 출력) 
+	+ 게임 초기 문구 출력 및 입력값 검증
+	+ 입력 값에 맞게 jewel 초기화 및 값 출력
+	+ 초기값에 chain이 발생 시 jewels 변경 출력
+  
+  + [0] swapScreen(변경 좌표 검증 및 jewels 변경)
+	+ 정상 이동 가능 좌표인지 검증
+	+ 검증 후 chain 발생 시 변경 내용 출력
+
 

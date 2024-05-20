@@ -32,18 +32,13 @@ public:
 	
 	bool setJewel(std::pair<int, int> loc, Jewel jewel);
 	Jewel getJewel(std::pair<int, int> loc) const;
-	void updateReset() { updateValidate = true; }
 
 	inline int getNumRows() const { return num_rows; }
 	inline int getNumColumns() const { return num_columns; }
 
 	static Jewel getJewelType(char letter);
 	static char getJewelLetter(Jewel jewel);
-
-	//text ui 사용 함수
 	
-
-
 private:
 	int num_rows;
 	int num_columns;
@@ -58,6 +53,8 @@ private:
 	bool fillJewels();
 };
 
+
+//text ui 사용 함수
 class Text_Puzzle : public Puzzle {
 public:
 	Text_Puzzle(int num_rows, int num_columns); 
