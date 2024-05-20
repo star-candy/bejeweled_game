@@ -162,25 +162,25 @@ bool Puzzle::clearChain() {
 bool Puzzle::fillJewels() {
     bool executeCount = false;
 
-    for (int y = 0; y < num_columns; y++) {
+    for (int x = 0; x < num_columns; x++) {
         int emptySpaces = 0;
-        for (int x = num_rows - 1; x >= 0; x--) {
-            if (jewels[x][y] == Jewel::NONE) { //세로열에 emptySpace 존재 여부 판단.
+        for (int y = num_rows - 1; y >= 0; y--) {
+            if (jewels[y][x] == Jewel::NONE) { //세로열에 emptySpace 존재 여부 판단. 좌 하단부터 상위로 검증
                 emptySpaces++;
                 executeCount = true;
             }
             else if (emptySpaces > 0) { //하나의 열에서는 NONE 열이 하나만 존재한다!!
-                jewels[x + emptySpaces][y] = jewels[x][y];//empty공간 발견시 더이상 empty 없을것, empty아래로 상위 jewel 옮기기
+                jewels[y + emptySpaces][x] = jewels[y][x];//empty공간 발견시 더이상 empty 없을것, empty아래로 상위 jewel 옮기기
             }
         }
         for (int i = 0; i < emptySpaces; i++) {
-            jewels[i][y] = Jewel(rand() % 7); // 맨 위에 새 보석 생성
+            jewels[i][x] = Jewel(rand() % 7); // 맨 위에 새 보석 생성
         }
     }
     return executeCount;
 }
 
-bool Puzzle::coordinateValidate(std::pair<int, int>& loc) const {//const 함수 getJewel에 사용 위해 const 태그 추가가
+bool Puzzle::coordinateValidate(std::pair<int, int>& loc) const {
     bool validate = false;
     if (loc.first >= 0 && loc.first < num_rows) {
         if (loc.second >= 0 && loc.second < num_columns) {
@@ -290,7 +290,7 @@ int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {
             if (predPuzzle < 0 || predPuzzle > 3) error("0~3 사이의 정수가 입력되어야 합니다.");
 
             initialize(predefined_puzzles[predPuzzle]);
-            printTextJewels();// 초기화 후 바로 출력으로 인해 00 00 입력 후 초기화 벡터 update 이뤄지지 않음
+            printTextJewels();
             while (update()) {
                 printTextJewels();
             }
@@ -307,7 +307,7 @@ int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {
     return 0;
 }
 
-bool Text_Puzzle::swapScreen() {//예외값 발생 시 오류 출력 후 재실행
+bool Text_Puzzle::swapScreen() {
     try {
         bool swapValidate = false;
         int firstX, secondX, firstY, secondY;
