@@ -226,15 +226,12 @@ Text_Puzzle::Text_Puzzle(int num_rows, int num_columns) : Puzzle(num_rows, num_c
     // 자식 객체 생성 위해 자식 class 생성자에 부모 class 생성자 초기화 기능 제공 -> 자식 객체 사용 가능
 }
 
-
-
-
 void Text_Puzzle::jewelsToTextVector() {
     textJewels.clear();
 
-    std::vector<char> textJewelColumns(8);
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    std::vector<char> textJewelColumns(getNumColumns());
+    for (int i = 0; i < getNumColumns(); i++) {
+        for (int j = 0; j < getNumRows(); j++) {
             textJewelColumns[j] = getJewelLetter(getJewel(std::make_pair(j, i)));
         }
         textJewels.push_back(textJewelColumns);
@@ -245,9 +242,9 @@ void Text_Puzzle::printTextJewels() {
     jewelsToTextVector();
 
     std::cout << "   0 1 2 3 4 5 6 7\n  +---------------\n";
-    for (int y = 0; y < 8; y++) {
+    for (int y = 0; y < getNumColumns(); y++) {
         cout << y << " |";
-        for (int x = 0; x < 8; x++) {
+        for (int x = 0; x < getNumRows(); x++) {
             cout << textJewels[y][x] << " ";
         }
         cout << "\n";
