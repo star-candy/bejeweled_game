@@ -19,15 +19,14 @@ int main()
 
 	int repeatcount = text.initialScreen(predefined_puzzles);
 
-	do{
+	while (repeatcount != 3) {
 		bool updatecount = true;
 
 		while (updatecount) {
 			updatecount = text.swapScreen();
 		}
 		repeatcount = text.initialScreen(predefined_puzzles);
-
-	} while (repeatcount != 3 && repeatcount > 0 && repeatcount < 3);
+	}
 
 	return 0;
 }
