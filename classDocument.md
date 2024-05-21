@@ -48,17 +48,14 @@
 	--------------------------------------------------------------------------------------
 
 ## 사용자 ui 구현하기
-
 ## text based bejeweled 게임 구현
 
 - main_text.cpp
 - Text_Puzzle class
 
-   + [0] constructor (게임의 가로, 세로 개수를 인자로 받음, 행 + 열 크기를 vector 크기로)
-	 + 모든 jewel 을 NONE으로 초기화
-	 + vector 명은 jewels
-
-  + [0]  createTextJewels (Jewel type인 jewels vector를 text vector로 변환하는 기능)
+  + [0] Text_Puzzle constructor 
+	
+  + [0] createTextJewels (Jewel type인 jewels vector를 text vector로 변환하는 기능)
 	
   + [0] printTextJewels (형식에 맞게 text vector 출력)
 	+ 열 단위로 출력해서 형식에 맞게 구성
@@ -71,5 +68,5 @@
   + [0] swapScreen(변경 좌표 검증 및 jewels 변경)
 	+ 정상 이동 가능 좌표인지 검증
 	+ 검증 후 chain 발생 시 변경 내용 출력
-
+	
 

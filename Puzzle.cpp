@@ -206,18 +206,18 @@ bool Puzzle::swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_l
 
 bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {//loc 검사 필요
     if (!coordinateValidate(loc)) return false;
-    int x = loc.first;
-    int y = loc.second;
+    int y = loc.first;
+    int x = loc.second;
 
-    jewels[x][y] = jewel;
+    jewels[y][x] = jewel;
     return true;
 }
 
 Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
     if (!coordinateValidate(loc)) return Jewel::NONE;
-    int x = loc.first;
-    int y = loc.second;
-    return jewels[x][y];
+    int y = loc.first;
+    int x = loc.second;
+    return jewels[y][x];
 }
 
 //----------- text ui function
