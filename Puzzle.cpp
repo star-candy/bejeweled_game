@@ -208,7 +208,7 @@ bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {//loc 검사 필요
     int x = loc.first;
     int y = loc.second;
 
-    jewels[y][x] = jewel;
+    jewels[x][y] = jewel;
     return true;
 }
 
@@ -216,7 +216,7 @@ Jewel Puzzle::getJewel(std::pair<int, int> loc) const {
     if (!coordinateValidate(loc)) return Jewel::NONE;
     int x = loc.first;
     int y = loc.second;
-    return jewels[y][x];
+    return jewels[x][y];
 }
 
 //----------- text ui function
@@ -243,7 +243,7 @@ void Text_Puzzle::printTextJewels() {
     for (int y = 0; y < getNumColumns(); y++) {
         cout << y << " |";
         for (int x = 0; x < getNumRows(); x++) {
-            cout << textJewels[y][x] << " ";
+            cout << textJewels[x][y] << " ";
         }
         cout << "\n";
     }
