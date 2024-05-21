@@ -197,11 +197,12 @@ bool Puzzle::swapJewels(std::pair<int, int> prev_loc, std::pair<int, int> next_l
     int yCount = abs(next_loc.second - prev_loc.second);
     if (!((xCount == 1 && yCount == 0) || (xCount == 0 && yCount == 1))) return false;
 
-    Jewel buffer = jewels[prev_loc.second][prev_loc.first]; //swap
-    jewels[prev_loc.second][prev_loc.first] = jewels[next_loc.second][next_loc.first];
-    jewels[next_loc.second][next_loc.first] = buffer;
+    Jewel buffer = jewels[prev_loc.first][prev_loc.second]; //swap
+    jewels[prev_loc.first][prev_loc.second] = jewels[next_loc.first][next_loc.second];
+    jewels[next_loc.first][next_loc.second] = buffer;
     return true;
 }
+
 
 bool Puzzle::setJewel(std::pair<int, int> loc, Jewel jewel) {//loc 검사 필요
     if (!coordinateValidate(loc)) return false;
@@ -326,8 +327,8 @@ bool Text_Puzzle::swapScreen() {
 
         if (firstX == 0 && secondX == 0 && firstY == 0 && secondY == 0) return false;
 
-        pair<int, int> prev = make_pair(firstX, firstY);
-        pair<int, int> next = make_pair(secondX, secondY);
+        pair<int, int> prev = make_pair(firstY, firstX);
+        pair<int, int> next = make_pair(secondY, secondX);
 
         if (!swapJewels(prev, next)) {
             error("적절한 이동 위치가 아닙니다.");
@@ -345,3 +346,6 @@ bool Text_Puzzle::swapScreen() {
         swapScreen();
     }
 }
+
+
+
