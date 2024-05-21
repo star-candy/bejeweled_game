@@ -18,8 +18,8 @@ int main()
 	Text_Puzzle text(8, 8);
 
 	int repeatcount = text.initialScreen(predefined_puzzles);
-	if (repeatcount == 3) return 0;
-	do{
+
+	while (repeatcount != 3 && repeatcount > 0 && repeatcount < 3) {
 		bool updatecount = true;
 
 		while (updatecount) {
@@ -27,7 +27,7 @@ int main()
 		}
 		repeatcount = text.initialScreen(predefined_puzzles);
 
-	} while (repeatcount != 3 && repeatcount > 0 && repeatcount < 3);
+	}
 
 	return 0;
 }
