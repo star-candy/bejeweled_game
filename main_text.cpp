@@ -17,15 +17,17 @@ int main()
 {
 	Text_Puzzle text(8, 8);
 
-	int repeatcount = text.initialScreen(predefined_puzzles);
+	int repeatCount = 3;
+	text.initialScreen(predefined_puzzles, repeatCount);
 
-	while (repeatcount != 3) {
-		bool updatecount = true;
+	while (repeatCount != 3) {
+		bool updateCount = true;
 
-		while (updatecount) {
-			updatecount = text.swapScreen();
+		while (updateCount) {
+			text.swapScreen(updateCount);
 		}
-		repeatcount = text.initialScreen(predefined_puzzles);
+		text.initialScreen(predefined_puzzles, repeatCount);
+
 	}
 
 	return 0;

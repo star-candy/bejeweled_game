@@ -251,8 +251,8 @@ void Text_Puzzle::printTextJewels() {
     cout << "\n";
 }
 
-int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {
-    int input = 0;
+void Text_Puzzle::initialScreen(vector<string>& predefined_puzzles, int& repeatCount) {
+    //int input = 0;
     try {
         cout << "<<< BEJEWELED >>>\n\n";
         cout << "[1] Start a new random puzzle\n";
@@ -260,24 +260,24 @@ int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {
         cout << "[3] Exit\n\n";
 
         cout << "> Choose a menu option (1~3): ";
-        cin >> input;
+        cin >> repeatCount;
         cout << "\n";
         if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 입력 버퍼 제거
             error("정수형의 값이 입력되어야 합니다.");
         }
-        if (input < 1 || input > 3) error("1~3 사이 정수가 입력되어야 합니다.");
+        if (repeatCount < 1 || repeatCount > 3) error("1~3 사이 정수가 입력되어야 합니다.");
 
-        if (input == 1) {
+        if (repeatCount == 1) {
             randomize();
             printTextJewels();
             while (update()) {
                 printTextJewels();
             }
-            return 1;
+            return;
         }
-        if (input == 2) {
+        if (repeatCount == 2) {
             int predPuzzle;
             cout << ">Choose a puzzle option (0~3): ";
             cin >> predPuzzle;
@@ -295,22 +295,20 @@ int Text_Puzzle::initialScreen(vector<string>& predefined_puzzles) {
             while (update()) {
                 printTextJewels();
             }
-            return 2;
+            return;
         }
-        if (input == 3) {
-            return 3;
+        if (repeatCount == 3) {
+            return;
         }
     }
     catch (runtime_error& e) {
         cout << e.what() << "\n\n";
-        initialScreen(predefined_puzzles);
+        initialScreen(predefined_puzzles, repeatCount);
     }
-    return 0;
 }
 
-bool Text_Puzzle::swapScreen() {
+void Text_Puzzle::swapScreen(bool& updateCount) {
     try {
-        bool swapValidate = false;
         int firstX, secondX, firstY, secondY;
 
         cout << "input the first swap position (row, col):";
@@ -325,7 +323,10 @@ bool Text_Puzzle::swapScreen() {
         }
         cout << "\n";
 
-        if (firstX == 0 && secondX == 0 && firstY == 0 && secondY == 0) return false;
+        if (firstX == 0 && secondX == 0 && firstY == 0 && secondY == 0) {
+            updateCount = false;
+            return;
+        }
 
         pair<int, int> prev = make_pair(firstY, firstX);
         pair<int, int> next = make_pair(secondY, secondX);
@@ -339,11 +340,11 @@ bool Text_Puzzle::swapScreen() {
             printTextJewels();
         }
 
-        return true;
+        return;
     }
     catch (runtime_error& e) {
         cout << e.what() << "\n\n";
-        swapScreen();
+        swapScreen(updateCount);
     }
 }
 

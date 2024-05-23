@@ -57,11 +57,11 @@ private:
 //text ui 사용 함수
 class Text_Puzzle : public Puzzle {
 public:
-	Text_Puzzle(int num_rows, int num_columns); 
+	Text_Puzzle(int num_rows, int num_columns);
 
 	void printTextJewels();
-	int initialScreen(vector<string>& predefined_puzzles);
-	bool swapScreen();
+	void initialScreen(vector<string>& predefined_puzzles, int& repeatCount);
+	void swapScreen(bool& updateCount);
 private:
 	std::vector<std::vector<char>> textJewels; //8 * 8 전체 jewel을 text type으로 저장 벡터
 	void jewelsToTextVector();
